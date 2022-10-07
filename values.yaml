@@ -23,6 +23,8 @@ astro:
   # The directory astro will enter and generate static content for
   # within <storage.projects.persistentVolumeClaimName>
   project: chart-example.local
+  ssh:
+    enabled: false
   image:
     repository: martydingo/astro
     imagePullPolicy: Always

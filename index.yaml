@@ -3,7 +3,17 @@ entries:
   Astro:
   - apiVersion: v2
     appVersion: 1.4.5
-    created: "2022-10-07T14:36:32.054996841Z"
+    created: "2022-10-07T15:26:49.950190234Z"
+    description: A Helm chart for Astro
+    digest: 43b765edc6651acfb8af9870b928c05fc76e4c1a8dd7d2ef9e4cdeff93a0a2cf
+    name: Astro
+    type: application
+    urls:
+    - https://martydingo.github.io/astro/Astro-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 1.4.5
+    created: "2022-10-07T15:26:49.939377303Z"
     description: A Helm chart for Astro
     digest: f59c4adab46c35c352d9bc55f908c1df1a9a4422d1b24428cb6d444a6801e44a
     name: Astro
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://martydingo.github.io/astro/Astro-1.0.0.tgz
     version: 1.0.0
-generated: "2022-10-07T14:36:32.047867178Z"
+generated: "2022-10-07T15:26:49.933566858Z"
