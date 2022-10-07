@@ -1,0 +1,51 @@
+{{- $RELEASE_NAME := .Release.Name -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: astro-{{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: astro-{{ .Release.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: astro-{{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: astro-{{ .Release.Name }}
+        app.kubernetes.io/name: astro
+    spec:
+      containers:
+        - image: {{ .Values.astro.image.repository }}:{{ .Values.astro.image.tag }}
+          command: ['bash', '-c', 'chmod +x /docker-entrypoint.sh && /docker-entrypoint.sh']
+          imagePullPolicy: {{ .Values.astro.image.imagePullPolicy }}
+          name: {{ .Release.Name }}
+          stdin: true 
+          tty: true 
+          env:
+            - name: "PROJECT" 
+              value: {{ .Values.astro.project }}{{ if .Values.astro.securityContext }}
+          securityContext: {{ range $key, $value := .Values.astro.securityContext }}
+            {{ $key }}: {{ $value }}{{ end }}{{ end }}
+          ports:
+            - containerPort: 8080
+              name: http-alt
+          volumeMounts:
+            - mountPath: /projects
+              name: vol-projects-{{ .Release.Name }}
+            - mountPath: /www
+              name: vol-www-{{ .Release.Name }}
+          resources:
+            requests:
+              memory: {{ .Values.astro.resources.requests.memory }}
+              cpu: {{ .Values.astro.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.astro.resources.limits.memory }}
+              cpu: {{ .Values.astro.resources.limits.cpu }}
+      volumes: {{ range $key, $value := .Values.storage }}
+        - name: vol-{{ $key }}-{{ $RELEASE_NAME }}
+          persistentVolumeClaim:
+            claimName: pvc-{{ $key }}-{{ $RELEASE_NAME }} {{ end }}
